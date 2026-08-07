@@ -81,11 +81,11 @@ The application allows visitors to register and submit visit requests online or 
 
 8. Success Criteria
 
-- A visitor should be able to register and submit a visit request within 3 minutes.
-- A security guard should be able to approve and generate a gate pass within 2 minutes.
-- The system should accurately record visitor check-in and check-out times.
-- Administrators should be able to generate visitor reports quickly.
-- The platform should securely authenticate users and maintain accurate visitor records.
+* A visitor should be able to register and submit a visit request within 3 minutes.
+* A security guard should be able to approve and generate a gate pass within 2 minutes.
+* The system should accurately record visitor check-in and check-out times.
+* Administrators should be able to generate visitor reports quickly.
+* The platform should securely authenticate users and maintain accurate visitor records.
 
 
 
