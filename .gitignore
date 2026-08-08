@@ -1,0 +1,51 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+
+venv/
+env/
+.venv/
+ENV/
+
+# Django
+
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Environment Variables
+
+.env
+.env.*
+
+# IDE / Editor
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Python Packaging
+
+*.egg-info/
+dist/
+build/
+
+# Coverage
+
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Temporary Files
+
+*.tmp
+*.temp
