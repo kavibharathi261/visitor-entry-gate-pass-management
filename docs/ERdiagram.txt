@@ -1,0 +1,75 @@
+Table User {
+  user_id int [pk, increment]
+  username varchar
+  password varchar
+  email varchar
+  role varchar [note: 'Admin / Employee / SecurityGuard']
+  created_at datetime
+}
+
+Table Department {
+  department_id int [pk, increment]
+  department_name varchar
+}
+
+Table Employee {
+  employee_id int [pk, increment]
+  user_id int [ref: - User.user_id]
+  department_id int [ref: > Department.department_id]
+  employee_name varchar
+  designation varchar
+  contact_number varchar
+}
+
+Table Visitor {
+  visitor_id int [pk, increment]
+  visitor_name varchar
+  phone_number varchar
+  email varchar
+  id_proof_type varchar
+  id_proof_number varchar
+  photo varchar
+}
+
+Table Visit {
+  visit_id int [pk, increment]
+  visitor_id int [ref: > Visitor.visitor_id]
+  employee_id int [ref: > Employee.employee_id]
+  purpose_of_visit varchar
+  visit_date date
+  status varchar [note: 'Pending / Approved / Rejected']
+  requested_at datetime
+}
+
+Table GatePass {
+  gatepass_id int [pk, increment]
+  visit_id int [ref: - Visit.visit_id]
+  pass_code varchar
+  issued_at datetime
+  valid_until datetime
+}
+
+Table CheckInOut {
+  checkinout_id int [pk, increment]
+  visit_id int [ref: - Visit.visit_id]
+  verified_by int [ref: > User.user_id]
+  check_in_time datetime
+  check_out_time datetime
+}
+
+Table Notification {
+  notification_id int [pk, increment]
+  user_id int [ref: > User.user_id]
+  visit_id int [ref: > Visit.visit_id]
+  message varchar
+  is_read boolean
+  created_at datetime
+}
+
+Table Report {
+  report_id int [pk, increment]
+  generated_by int [ref: > User.user_id]
+  report_type varchar
+  generated_at datetime
+  file_path varchar
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="D-TW7WsNgVr_fC7KinPR">
+    <mxGraphModel dx="1022" dy="564" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="Admin" vertex="1">
+          <mxGeometry height="60" width="140" x="290" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="Employee / Host" vertex="1">
+          <mxGeometry height="60" width="140" x="470" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="Security Guard" vertex="1">
+          <mxGeometry height="60" width="140" x="650" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" value="Web Browser / Frontend&#xa;(HTML, CSS, Bootstrap, JavaScript)" vertex="1">
+          <mxGeometry height="60" width="280" x="470" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1;" value="Django Application (Backend)" vertex="1">
+          <mxGeometry height="150" width="480" x="370" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;" value="Authentication&#xa;(Login / Role-based Access)" vertex="1">
+          <mxGeometry height="70" width="140" x="390" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;" value="Business Logic&#xa;(Visitor / Approval / Gate Pass)" vertex="1">
+          <mxGeometry height="70" width="140" x="550" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;" value="Django Views / REST API&#xa;(Request Handling)" vertex="1">
+          <mxGeometry height="70" width="120" x="710" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-9" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;" value="MySQL Database" vertex="1">
+          <mxGeometry height="80" width="180" x="550" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-10" edge="1" parent="1" source="nQqPzwYz_P8Em6bOMN2e-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="nQqPzwYz_P8Em6bOMN2e-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-11" edge="1" parent="1" source="nQqPzwYz_P8Em6bOMN2e-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="nQqPzwYz_P8Em6bOMN2e-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-12" edge="1" parent="1" source="nQqPzwYz_P8Em6bOMN2e-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="nQqPzwYz_P8Em6bOMN2e-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-13" edge="1" parent="1" source="nQqPzwYz_P8Em6bOMN2e-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;endArrow=block;fontSize=11;" target="nQqPzwYz_P8Em6bOMN2e-5" value="HTTP Request / Response">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nQqPzwYz_P8Em6bOMN2e-14" edge="1" parent="1" source="nQqPzwYz_P8Em6bOMN2e-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;endArrow=block;fontSize=11;" target="nQqPzwYz_P8Em6bOMN2e-9" value="SQL Query (ORM) / Result">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
