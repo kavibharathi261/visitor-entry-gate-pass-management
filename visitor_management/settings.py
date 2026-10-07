@@ -31,18 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'visitor_app',
-    'rest_framework',
-    'drf_spectacular',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+
+    "rest_framework",
+    "drf_spectacular",
+    "corsheaders",
+    "visitor_app",
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -135,12 +138,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+
     'DEFAULT_RENDERER_CLASSES': (
-    'visitor_app.renderers.CustomJSONRenderer',
-),
+        'visitor_app.renderers.CustomJSONRenderer',
+    ),
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Visitor Entry Gate Pass Management API',
     'DESCRIPTION': 'API documentation for Visitor Entry Gate Pass Management System',
     'VERSION': '1.0.0',
 }
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
