@@ -11,60 +11,82 @@ function VisitRequest() {
     employee: "",
     visit_date: "",
     purpose: "",
-    status: "Pending",
   });
-
-  const token = localStorage.getItem("access");
 
   useEffect(() => {
     loadDepartments();
     loadEmployees();
   }, []);
 
+  const getConfig = () => ({
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+
   const loadDepartments = async () => {
     try {
-      const response = await api.get("departments/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setDepartments(response.data.data);
+      const response = await api.get("departments/", getConfig());
+      setDepartments(response.data.data || []);
     } catch (error) {
-      console.log("Department Error:", error);
+      console.log("Department Error:", error.response?.data || error);
     }
   };
 
   const loadEmployees = async () => {
     try {
-      const response = await api.get("employees/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setEmployees(response.data.data);
+      const response = await api.get("employees/", getConfig());
+      setEmployees(response.data.data || []);
     } catch (error) {
-      console.log("Employee Error:", error);
+      console.log("Employee Error:", error.response?.data || error);
     }
   };
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const department = departments.find(
+      (item) =>
+        item.department_name.toLowerCase() ===
+        form.department.trim().toLowerCase()
+    );
+
+    const employee = employees.find(
+      (item) =>
+        item.employee_name.toLowerCase() ===
+        form.employee.trim().toLowerCase()
+    );
+
+    if (!department) {
+      alert("Enter an existing department name.");
+      return;
+    }
+
+    if (
+      !employee ||
+      Number(employee.department) !== Number(department.department_id)
+    ) {
+      alert("Enter an employee from this department.");
+      return;
+    }
+
     try {
-      await api.post("visit-requests/", form, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await api.post(
+        "visit-requests/",
+        {
+          visitor: Number(form.visitor),
+          department: department.department_id,
+          employee: employee.employee_id,
+          visit_date: form.visit_date,
+          purpose: form.purpose,
+          status: "Pending",
         },
-      });
+        getConfig()
+      );
 
       alert("Visit request submitted successfully!");
 
@@ -74,55 +96,32 @@ function VisitRequest() {
         employee: "",
         visit_date: "",
         purpose: "",
-        status: "Pending",
       });
     } catch (error) {
-      console.log("Visit Request Error:", error);
-
-      if (error.response) {
-        alert(
-          "Request failed:\n" +
-            JSON.stringify(error.response.data)
-        );
-      } else {
-        alert("Cannot connect to Django server");
-      }
+      console.log("Visit Request Error:", error.response?.data || error);
+      alert(
+        error.response
+          ? "Request failed. Check the browser console."
+          : "Cannot connect to Django server"
+      );
     }
   };
 
   return (
     <div className="container py-4">
-
-      <div className="mb-4">
-        <h2>Visit Request</h2>
-
-        <p className="text-muted">
-          Submit a request for visitor entry
-        </p>
-      </div>
-
+      <h2>Visit Request</h2>
+      <p className="text-muted">Submit a request for visitor entry</p>
 
       <div className="card shadow-sm border-0">
-
         <div className="card-header bg-primary text-white">
-          <h5 className="mb-0">
-            Visit Details
-          </h5>
+          <h5 className="mb-0">Visit Details</h5>
         </div>
 
-
         <div className="card-body p-4">
-
           <form onSubmit={handleSubmit}>
-
             <div className="row">
-
               <div className="col-md-6 mb-3">
-
-                <label className="form-label">
-                  Visitor ID
-                </label>
-
+                <label className="form-label">Visitor ID</label>
                 <input
                   type="number"
                   name="visitor"
@@ -132,80 +131,54 @@ function VisitRequest() {
                   onChange={handleChange}
                   required
                 />
-
               </div>
 
-
               <div className="col-md-6 mb-3">
-
-                <label className="form-label">
-                  Department
-                </label>
-
-                <select
+                <label className="form-label">Department</label>
+                <input
+                  type="text"
                   name="department"
-                  className="form-select"
+                  className="form-control"
+                  placeholder="Type department name"
+                  list="departments-list"
                   value={form.department}
                   onChange={handleChange}
                   required
-                >
-
-                  <option value="">
-                    Select Department
-                  </option>
-
-                  {departments.map((department) => (
+                />
+                <datalist id="departments-list">
+                  {departments.map((item) => (
                     <option
-                      key={department.department_id}
-                      value={department.department_id}
-                    >
-                      {department.department_name}
-                    </option>
+                      key={item.department_id}
+                      value={item.department_name}
+                    />
                   ))}
-
-                </select>
-
+                </datalist>
               </div>
 
-
               <div className="col-md-6 mb-3">
-
-                <label className="form-label">
-                  Employee
-                </label>
-
-                <select
+                <label className="form-label">Employee</label>
+                <input
+                  type="text"
                   name="employee"
-                  className="form-select"
+                  className="form-control"
+                  placeholder="Type employee name"
+                  list="employees-list"
                   value={form.employee}
                   onChange={handleChange}
                   required
-                >
-
-                  <option value="">
-                    Select Employee
-                  </option>
-
-                  {employees.map((employee) => (
+                />
+                <datalist id="employees-list">
+                  {employees.map((item) => (
                     <option
-                      key={employee.employee_id}
-                      value={employee.employee_id}
-                    >
-                      {employee.employee_name}
-                    </option>
+                      key={item.employee_id}
+                      value={item.employee_name}
+                    />
                   ))}
-
-                </select>
-
+                </datalist>
               </div>
 
-
               <div className="col-md-6 mb-3">
-
-                <label className="form-label">
-                  Visit Date
-                </label>
-
+                <label className="form-label">Visit Date</label>
                 <input
                   type="date"
                   name="visit_date"
@@ -214,16 +187,10 @@ function VisitRequest() {
                   onChange={handleChange}
                   required
                 />
-
               </div>
 
-
               <div className="col-12 mb-3">
-
-                <label className="form-label">
-                  Purpose of Visit
-                </label>
-
+                <label className="form-label">Purpose of Visit</label>
                 <textarea
                   name="purpose"
                   className="form-control"
@@ -232,26 +199,16 @@ function VisitRequest() {
                   value={form.purpose}
                   onChange={handleChange}
                   required
-                ></textarea>
-
+                />
               </div>
-
             </div>
 
-
-            <button
-              type="submit"
-              className="btn btn-primary px-4"
-            >
+            <button type="submit" className="btn btn-primary px-4">
               Submit Visit Request
             </button>
-
           </form>
-
         </div>
-
       </div>
-
     </div>
   );
 }
