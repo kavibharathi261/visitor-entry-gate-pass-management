@@ -19,10 +19,11 @@ import GatePass from "./pages/GatePass";
 import CheckInOut from "./pages/CheckInOut";
 import VisitorHistory from "./pages/VisitorHistory";
 
-
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,9 +36,11 @@ function Login() {
     }
 
     try {
+      setLoading(true);
+
       const response = await api.post("login/", {
-        username: username,
-        password: password,
+        username,
+        password,
       });
 
       const tokens = response.data.data;
@@ -45,244 +48,269 @@ function Login() {
       localStorage.setItem("access", tokens.access);
       localStorage.setItem("refresh", tokens.refresh);
 
-      alert("Login successful");
-
       navigate("/dashboard");
     } catch (error) {
-      console.log("Login Error:", error);
+      console.error("Login Error:", error);
 
       if (error.response) {
         alert("Invalid username or password");
       } else {
         alert("Cannot connect to Django server");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div
-        className="card shadow p-4 mx-auto"
-        style={{ maxWidth: "400px" }}
-      >
-        <h2 className="text-center mb-2">
-          Visitor Entry
-        </h2>
+    <div className="login-page">
+      <div className="login-showcase">
+        <div className="brand-mark">VG</div>
 
-        <p className="text-center text-muted mb-4">
-          Gate Pass Management System
+        <div className="showcase-content">
+          <span className="eyebrow">SMART • SECURE • SIMPLE</span>
+
+          <h1>
+            Visitor Entry
+            <br />
+            Management System
+          </h1>
+
+          <p>
+            A smarter way to manage visitor registrations,
+            approvals and digital gate passes.
+          </p>
+
+          <div className="security-note">
+            <span className="security-icon">✓</span>
+            Secure and organised visitor management
+          </div>
+        </div>
+
+        <div className="showcase-footer">
+          VISITOR MANAGEMENT PORTAL
+        </div>
+      </div>
+
+      <div className="login-form-section">
+        <div className="login-form-card">
+          <div className="mobile-brand">VG</div>
+
+          <span className="form-eyebrow">WELCOME BACK</span>
+          <h2>Sign in to your account</h2>
+
+          <p className="form-description">
+            Enter your credentials to continue.
+          </p>
+
+          <form onSubmit={handleLogin}>
+            <div className="login-field">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                required
+              />
+            </div>
+
+            <div className="login-field">
+              <label htmlFor="password">Password</label>
+
+              <div className="password-wrapper">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="show-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="login-submit"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign In"}
+              {!loading && <span>→</span>}
+            </button>
+          </form>
+
+          <div className="login-security">
+            <span>🔒</span> Authorised access only
+          </div>
+        </div>
+
+        <p className="login-copyright">
+          © Visitor Entry Management System
         </p>
-
-        <form onSubmit={handleLogin}>
-
-          <div className="mb-3">
-            <label className="form-label">
-              Username
-            </label>
-
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
-
-          <div className="mb-3">
-            <label className="form-label">
-              Password
-            </label>
-
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-
-          <button
-            type="submit"
-            className="btn btn-primary w-100"
-          >
-            Login
-          </button>
-
-        </form>
       </div>
     </div>
   );
 }
 
-
 function Navigation() {
-
   const navigate = useNavigate();
 
-  const logout = () => {
-
+  const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
-
     navigate("/");
   };
 
-
   return (
-    <nav className="navbar navbar-dark bg-dark px-3">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+      <Link className="navbar-brand me-4" to="/dashboard">
+        Visitor Management
+      </Link>
 
-      <span className="navbar-brand">
-        Visitor Entry System
-      </span>
-
-
-      <div className="d-flex gap-2 flex-wrap">
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/dashboard"
-        >
+      <div className="navbar-nav flex-row flex-wrap">
+        <Link className="nav-link px-2" to="/dashboard">
           Dashboard
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/visitor-registration"
-        >
-          Visitor
+        <Link className="nav-link px-2" to="/register">
+          Visitor Registration
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/visit-request"
-        >
+        <Link className="nav-link px-2" to="/visit-request">
           Visit Request
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/approval"
-        >
+        <Link className="nav-link px-2" to="/approval">
           Approval
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/gate-pass"
-        >
+        <Link className="nav-link px-2" to="/gate-pass">
           Gate Pass
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/check-in-out"
-        >
-          Check-In/Out
+        <Link className="nav-link px-2" to="/check-in-out">
+          Check In/Out
         </Link>
 
-
-        <Link
-          className="btn btn-outline-light btn-sm"
-          to="/visitor-history"
-        >
-          History
+        <Link className="nav-link px-2" to="/visitor-history">
+          Visitor History
         </Link>
-
-
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={logout}
-        >
-          Logout
-        </button>
-
       </div>
 
+      <button
+        type="button"
+        className="btn btn-outline-light btn-sm ms-auto"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
     </nav>
   );
 }
 
+function ProtectedLayout({ children }) {
+  const token = localStorage.getItem("access");
 
-function ProtectedLayout() {
+  if (!token) {
+    return <Login />;
+  }
 
   return (
     <>
       <Navigation />
-
-      <Routes>
-
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
-
-        <Route
-          path="/visitor-registration"
-          element={<VisitorRegistration />}
-        />
-
-        <Route
-          path="/visit-request"
-          element={<VisitRequest />}
-        />
-
-        <Route
-          path="/approval"
-          element={<Approval />}
-        />
-
-        <Route
-          path="/gate-pass"
-          element={<GatePass />}
-        />
-
-        <Route
-          path="/check-in-out"
-          element={<CheckInOut />}
-        />
-
-        <Route
-          path="/visitor-history"
-          element={<VisitorHistory />}
-        />
-
-      </Routes>
+      <main className="container-fluid py-4">
+        {children}
+      </main>
     </>
   );
 }
 
-
 function App() {
-
   return (
     <BrowserRouter>
-
       <Routes>
+        <Route path="/" element={<Login />} />
 
         <Route
-          path="/"
-          element={<Login />}
+          path="/dashboard"
+          element={
+            <ProtectedLayout>
+              <Dashboard />
+            </ProtectedLayout>
+          }
         />
 
         <Route
-          path="/*"
-          element={<ProtectedLayout />}
+          path="/register"
+          element={
+            <ProtectedLayout>
+              <VisitorRegistration />
+            </ProtectedLayout>
+          }
         />
 
+        <Route
+          path="/visit-request"
+          element={
+            <ProtectedLayout>
+              <VisitRequest />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/approval"
+          element={
+            <ProtectedLayout>
+              <Approval />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/gate-pass"
+          element={
+            <ProtectedLayout>
+              <GatePass />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/check-in-out"
+          element={
+            <ProtectedLayout>
+              <CheckInOut />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/visitor-history"
+          element={
+            <ProtectedLayout>
+              <VisitorHistory />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route path="*" element={<Login />} />
       </Routes>
-
     </BrowserRouter>
   );
 }
 
+export { App as default };
 
-export default App;
